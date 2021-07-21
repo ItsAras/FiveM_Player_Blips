@@ -6,4 +6,6 @@ SETUP:
 2. Open your server.cfg file and add ensure playerblips.
 3. Restart the server.
 
-NOTES: If your server has more or less slots than 48, edit playerblips.lua file and replace 48 with the amount of slots your server has.
+NOTES: 
+
+If your server has more or less slots than 48, edit playerblips.lua file and replace 48 with the amount of slots your server has.
