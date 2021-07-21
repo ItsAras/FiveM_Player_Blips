@@ -1,11 +1,35 @@
-	for _, player in ipairs(GetActivePlayers()) do
-		local ped = GetPlayerPed(player)
-		local pedName = GetPlayerName(player)
-		local pedBlip = AddBlipForEntity(ped)
-		SetBlipNameToPlayerName(pedBlip, player)
-		SetBlipColour(pedBlip, 0)
-		SetBlipCategory(pedBlip, 57)
-		SetBlipScale(pedBlip, 0.9)
-		Citizen.InvokeNative(0xBFEFE3321A3F5015, ped, pedName, false, false, '', false)
+function GetPlayers()
+	local players = {}
 
+	for i = 0, 48 do
+		if NetworkIsPlayerActive(1) then
+			table.insert(players, 1)
+		end
 	end
+	return players
+end
+
+Citizen.CreateThread(function()
+	local blips = {}
+	local currentPlayer = PlayerId()
+
+	while true do
+		Wait(100)
+
+		local players = GetPlayers()
+
+		for _, player in ipairs(GetActivePlayers()) do
+			if player ~= currentPlayer and NetworkIsPlayerActive(player) then
+				local playerPed = GetPlayerPed(player)
+				local playerName = GetPlayerName(player)
+				RemoveBlip(blips[player])
+				local new_blip = AddBlipForEntity(playerPed)
+				SetBlipNameToPlayerName(new_blip, player)
+				SetBlipColour(new_blip, 0)
+				SetBlipCategory(new_blip, 0)
+				SetBlipScale(new_blip, 0.85)
+				blips[player] = new_blip
+			end
+		end
+	end
+end)
